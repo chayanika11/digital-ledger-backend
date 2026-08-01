@@ -15,6 +15,18 @@ A RESTful financial ledger and account management backend service built with **N
 
 ---
 
+## ⚡ Load Test & Performance Benchmarks (`autocannon`)
+
+Benchmarked using `autocannon` on Node.js runtime:
+
+| Endpoint | Description | Throughput (RPS) | Avg Latency | p50 Latency | p99 Latency |
+|---|---|---|---|---|---|
+| `GET /` | Health Check | **8,554 req/sec** | **0.57 ms** | `< 1 ms` | **3 ms** |
+| `GET /api/accounts` | Auth & DB Account Query | **729 req/sec** | **13.22 ms** | **12 ms** | **24 ms** |
+| `POST /api/transactions` | Full Ledger Transfer | **2,680 req/sec** | **1.43 ms** | **1 ms** | **4 ms** |
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Runtime**: Node.js
@@ -22,6 +34,7 @@ A RESTful financial ledger and account management backend service built with **N
 - **Database**: MongoDB via Mongoose ORM
 - **Security & Validation**: `express-rate-limit`, `express-validator`, `bcryptjs`, `jsonwebtoken`
 - **Email Service**: Nodemailer (OAuth2)
+- **Benchmarking**: `autocannon`, `mongodb-memory-server`
 - **Environment Config**: dotenv
 
 ---
@@ -51,12 +64,17 @@ REFRESH_TOKEN=your-google-refresh-token
 npm install
 ```
 
-### 2. Run in Development Mode
+### 2. Run Load Benchmark Test
+```bash
+node loadtest.js
+```
+
+### 3. Run in Development Mode
 ```bash
 npm run dev
 ```
 
-### 3. Run in Production Mode
+### 4. Run in Production Mode
 ```bash
 npm start
 ```
@@ -98,6 +116,7 @@ The server will start at `http://localhost:3000`.
 │   ├── models/          # Mongoose database schemas
 │   ├── routes/          # Express route definitions
 │   └── services/        # Nodemailer and background services
+├── loadtest.js          # Automated autocannon performance benchmark suite
 ├── .gitignore           # Ignored files (.env, node_modules)
 ├── package.json         # Dependencies & scripts
 ├── server.js            # Main application entry point
